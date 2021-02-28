@@ -114,7 +114,7 @@ variable "allocated_storage" {
 }
 
 variable "storage_encrypted" {
-  default = false
+  default = true
 }
 
 variable "db_subnet_group_name" {
