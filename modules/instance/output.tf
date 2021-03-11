@@ -38,10 +38,6 @@ output "instance_endpoint" {
   value       = join("", aws_db_instance.default.*.endpoint)
 }
 
-output "rds_security_group" {
-  value = join("", aws_db_instance.default.*.security_group_names)
-}
-
 output "instance_name" {
   value = join("", aws_db_instance.default.*.name)
 }
