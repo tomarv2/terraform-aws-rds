@@ -109,15 +109,15 @@ module "rds_instance" {
   username               = "test"
   password               = "test123!"
   account_id             = "123456789012"
-  security_groups_to_use = [module.securitygroup.security_group_id]
+  security_groups_to_use = [module.security_group.security_group_id]
   #-------------------------------------------
   # Do not change the teamid, prjid once set.
   teamid = var.teamid
   prjid  = var.prjid
 }
 
-module "securitygroup" {
-  source = "git::git@github.com:tomarv2/terraform-aws-securitygroup.git?ref=v0.0.2"
+module "security_group" {
+  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
 
   email         = "demo@demo.com"
   service_ports = [5432]
@@ -140,15 +140,15 @@ module "rds" {
   dbname                 = "test"
   rds_master_username    = "test"
   rds_master_password    = "test123!"
-  security_groups_to_use = [module.securitygroup.security_group_id]
+  security_groups_to_use = [module.security_group.security_group_id]
   #-------------------------------------------
   # Do not change the teamid, prjid once set.
   teamid = var.teamid
   prjid  = var.prjid
 }
 
-module "securitygroup" {
-  source = "git::git@github.com:tomarv2/terraform-aws-securitygroup.git?ref=v0.0.2"
+module "security_group" {
+  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
 
   email         = "demo@demo.com"
   service_ports = [5432]

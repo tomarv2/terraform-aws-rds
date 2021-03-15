@@ -41,5 +41,5 @@ output "rds_cluster_master_username" {
 }
 
 output "rds_security_group" {
-  value = module.securitygroup.security_group_id
+  value = module.security_group.security_group_id
 }
