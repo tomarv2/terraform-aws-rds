@@ -64,7 +64,7 @@ export TF_AWS_BUCKET_REGION=us-west-2
 export PATH=$PATH:/usr/local/bin/
 ```  
 
-- Make required change to `examples` directory 
+- Make required change to `examples` directory. 
 
 
 - Run and verify the output before deploying:
@@ -109,18 +109,7 @@ module "rds_instance" {
   username               = "test"
   password               = "test123!"
   account_id             = "123456789012"
-  security_groups_to_use = [module.security_group.security_group_id]
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-
-module "security_group" {
-  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
-
-  email         = "demo@demo.com"
-  service_ports = [5432]
+  security_groups_to_use = [<existing security group id>]
   #-------------------------------------------
   # Do not change the teamid, prjid once set.
   teamid = var.teamid
