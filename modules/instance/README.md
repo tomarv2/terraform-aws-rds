@@ -1,8 +1,15 @@
+## Requirements
+
+| Name | Version |
+|------|---------|
+| terraform | >= 0.14 |
+| aws | ~> 3.29 |
+
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | 3.29 |
+| aws | ~> 3.29 |
 
 ## Inputs
 
@@ -20,7 +27,6 @@
 | dbname | n/a | `any` | n/a | yes |
 | delete\_automated\_backups | Specifies whether to remove automated backups immediately after the DB instance is deleted | `bool` | `true` | no |
 | deploy\_rds | feature flag, true or false | `bool` | `true` | no |
-| email | email address to be used for tagging (suggestion: use group email address) | `any` | n/a | yes |
 | enabled\_cloudwatch\_logs\_exports | List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL). | `list(string)` | `[]` | no |
 | engine | Name of the database engine to be used for this DB cluster. Defaults to aurora [mysql, postgres] | `string` | `"postgres"` | no |
 | engine\_version | The version number of the database engine to use | `string` | `""` | no |
@@ -39,7 +45,7 @@
 | security\_groups\_to\_use | List of VPC security groups to associate | `list` | `[]` | no |
 | service\_ports | n/a | `string` | `"5432"` | no |
 | skip\_final\_snapshot | Determines whether a final DB snapshot is created before the DB instance is deleted. If true is specified, no DBSnapshot is created. If false is specified, a DB snapshot is created before the DB instance is deleted, using the value from final\_snapshot\_identifier | `bool` | `true` | no |
-| storage\_encrypted | Specifies whether the DB instance is encrypted. Note that if you are creating a cross-region read replica this field is ignored and you should instead declare kms\_key\_id with a valid ARN. The default is false if not specified. | `bool` | `true` | no |
+| storage\_encrypted | Specifies whether the DB instance is encrypted. Note that if you are creating a cross-region read replica this field is ignored and you should instead declare kms\_key\_id with a valid ARN. The default is false if not specified. | `bool` | `false` | no |
 | storage\_type | 'standard' , 'gp2',  or 'io1' (provisioned IOPS SSD). The default is 'io1' if iops is specified | `string` | `"standard"` | no |
 | teamid | (Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply' | `any` | n/a | yes |
 | username | Username for the master DB user | `any` | n/a | yes |
@@ -57,4 +63,3 @@
 | instance\_port | The port |
 | instance\_resource\_id | The Resource ID of the instance |
 | instance\_username | The username |
-| rds\_security\_group | n/a |

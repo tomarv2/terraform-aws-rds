@@ -3,13 +3,13 @@
 | Name | Version |
 |------|---------|
 | terraform | >= 0.14 |
-| aws | 3.29 |
+| aws | ~> 3.29 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| aws | 3.29 |
+| aws | ~> 3.29 |
 
 ## Inputs
 
@@ -23,7 +23,6 @@
 | dbname | n/a | `any` | n/a | yes |
 | delete\_protection | n/a | `string` | `"false"` | no |
 | deploy\_rds\_cluster | feature flag, true or false | `bool` | `true` | no |
-| email | email address to be used for tagging (suggestion: use group email address) | `any` | n/a | yes |
 | enabled\_cloudwatch\_logs\_exports | List of log types to enable for exporting to CloudWatch logs. If omitted, no logs will be exported. Valid values (depending on engine): alert, audit, error, general, listener, slowquery, trace, postgresql (PostgreSQL), upgrade (PostgreSQL). | `list(string)` | `[]` | no |
 | engine | Name of the database engine to be used for this DB cluster. Defaults to aurora [aurora, aurora-mysql, aurora-postgresql] | `string` | `"aurora"` | no |
 | engine\_mode | n/a | `string` | `"provisioned"` | no |

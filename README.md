@@ -25,8 +25,10 @@
 
 
 `terraform-aws-rds` makes it easy to create AWS RDS Instance and Cluster. This module consists of the following submodules:
-- aurora_cluster
-- instance
+
+:point_right: [aurora_cluster](modules/aurora_cluster)
+
+:point_right: [instance](modules/instance)
 
 ---
 
@@ -61,25 +63,23 @@ pip install tfremote
 export TF_AWS_BUCKET=<remote state bucket name>
 export TF_AWS_PROFILE=default
 export TF_AWS_BUCKET_REGION=us-west-2
-export PATH=$PATH:/usr/local/bin/
 ```  
 
 - Make required change to `examples` directory. 
 
-
 - Run and verify the output before deploying:
 ```
-tf -cloud aws plan
+tf -cloud aws plan -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to deploy:
 ```
-tf -cloud aws apply
+tf -cloud aws apply -var='teamid=foo' -var='prjid=bar'
 ```
 
 - Run below to destroy:
 ```
-tf -cloud aws destroy
+tf -cloud aws destroy -var='teamid=foo' -var='prjid=bar'
 ```
 
 > ❗️ **Important** - Two variables are required for using `tf` package:
@@ -95,21 +95,44 @@ tf -cloud aws destroy
 >
 > For more information refer to [Terraform documentation](https://www.terraform.io/docs/language/values/variables.html)
 
-##### RDS instance with Security Group
+#### RDS instance with New Security Group
 ```
+module "common" {
+  source = "git::git@github.com:tomarv2/terraform-global.git//common?ref=v0.0.1"
+}
+
 module "rds_instance" {
-  source = "../../instance"
+  source = "../../modules/instance"
 
   deploy_rds = true
 
-  email                  = "demo@demo.com"
   dbname                 = "test"
   engine                 = "postgres"
-  engine_version         = "11.7"
+  engine_version         = "11.9"
   username               = "test"
   password               = "test123!"
   account_id             = "123456789012"
-  security_groups_to_use = [<existing security group id>]
+  security_groups_to_use = [module.security_group.security_group_id]
+  #-------------------------------------------
+  # Do not change the teamid, prjid once set.
+  teamid = var.teamid
+  prjid  = var.prjid
+}
+
+module "security_group" {
+  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.2"
+
+  account_id = "123456789012"
+  security_group_ingress = {
+    default = {
+      description = "postgres"
+      from_port   = 5432
+      protocol    = "tcp"
+      to_port     = 5432
+      self        = false
+      cidr_blocks = module.common.cidr_for_sec_grp_access
+    }
+  }
   #-------------------------------------------
   # Do not change the teamid, prjid once set.
   teamid = var.teamid
@@ -122,9 +145,6 @@ module "rds_instance" {
 module "rds" {
   source = "../../aurora_cluster"
 
-  deploy_rds_cluster = true
-
-  email                  = "demo@demo.com"
   account_id             = "123456789012"
   dbname                 = "test"
   rds_master_username    = "test"
@@ -139,7 +159,6 @@ module "rds" {
 module "security_group" {
   source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.1"
 
-  email         = "demo@demo.com"
   service_ports = [5432]
   #-------------------------------------------
   # Do not change the teamid, prjid once set.
