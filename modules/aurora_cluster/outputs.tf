@@ -29,7 +29,7 @@ output "rds_cluster_master_password" {
 }
 
 output "rds_cluster_port" {
-  description = "The port"
+  description = "RDS cluster port"
   value       = join("", aws_rds_cluster.aurora_cluster.*.port)
 }
 

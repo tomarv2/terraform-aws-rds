@@ -1,41 +1,46 @@
 variable "teamid" {
-  description = "(Required) Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply'"
+  description = "Name of the team/group e.g. devops, dataengineering. Should not be changed after running 'tf apply'"
+  type        = string
 }
 
 variable "prjid" {
-  description = "(Required) Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply'"
+  description = "Name of the project/stack e.g: mystack, nifieks, demoaci. Should not be changed after running 'tf apply'"
+  type        = string
 }
 
-variable "profile_to_use" {
-  description = "profile to use from ~/.aws/config"
-  default     = "default"
-}
 
 variable "rds_master_username" {
   description = "Username for the master DB user"
+  type        = string
 }
 
 variable "rds_master_password" {
   description = "Password for the master DB user. Note that this may show up in logs, and it will be stored in the state file"
+  type        = string
 }
 
 variable "backup_retention_period" {
   description = "The days to retain backups for"
   default     = 1
+  type        = number
 }
 
 variable "preferred_backup_window" {
   description = "The daily time range (in UTC) during which automated backups are created if they are enabled. Example: '09:46-10:16'. Must not overlap with maintenance_window"
   default     = "09:46-10:16"
+  type        = string
 }
 
 variable "maintenance_window" {
   description = "The window to perform maintenance in. Syntax: 'ddd:hh24:mi-ddd:hh24:mi'. Eg: 'Mon:00:00-Mon:03:00'"
   default     = "Mon:00:00-Mon:03:00"
+  type        = string
 }
 
 variable "engine_mode" {
-  default = "provisioned"
+  description = "Engine"
+  default     = "provisioned"
+  type        = string
 }
 
 variable "engine_version" {
@@ -47,32 +52,36 @@ variable "engine_version" {
 variable "engine" {
   default     = "aurora"
   description = "Name of the database engine to be used for this DB cluster. Defaults to aurora [aurora, aurora-mysql, aurora-postgresql]"
+  type        = string
 }
 
 variable "writer_instance_class" {
   default     = "db.t3.medium"
   description = "only needed when using aws_rds_cluster_instance = not `serverless`"
+  type        = string
 }
 
-variable "dbname" {}
+variable "dbname" {
+  description = "DB name"
+  type        = string
+}
 
 variable "number_of_writer_instances" {
   default     = 1
   description = "0 instance refer to `serverless` only works for mySQL, not supported for Postgres"
-}
-
-variable "scaling_configuration" {
-  type        = list(any)
-  default     = []
-  description = "List of nested attributes with scaling properties. Only valid when engine_mode is set to `serverless`"
+  type        = number
 }
 
 variable "is_public" {
-  default = "false"
+  description = "RDS public"
+  default     = "false"
+  type        = string
 }
 
 variable "delete_protection" {
-  default = "false"
+  description = "Delete protection"
+  default     = "false"
+  type        = string
 }
 
 variable "availability_zones" {
@@ -87,22 +96,16 @@ variable "skip_final_snapshot" {
   default     = true
 }
 
-variable "aws_region" {
-  description = "The AWS region to create resources"
-  default     = "us-west-2"
-}
-
-variable "account_id" {
-  description = "(Required) AWS account id (used to pull values from shared base module like vpc info, subnet ids)"
-}
-
 variable "service_ports" {
-  default = "5432"
+  description = "RDS service port"
+  default     = "5432"
+  type        = string
 }
 
-variable "security_groups_to_use" {
+variable "security_groups" {
   description = "List of VPC security groups to associate"
   default     = []
+  type        = list(any)
 }
 
 variable "final_snapshot_identifier" {
@@ -126,14 +129,11 @@ variable "enabled_cloudwatch_logs_exports" {
 variable "copy_tags_to_snapshot" {
   description = "Copy all Cluster tags to snapshots."
   default     = false
+  type        = bool
 }
 
 variable "storage_encrypted" {
   description = "Specifies whether the DB instance is encrypted. Note that if you are creating a cross-region read replica this field is ignored and you should instead declare kms_key_id with a valid ARN. The default is false if not specified."
   default     = true
-}
-
-variable "storage_type" {
-  description = "'standard' , 'gp2',  or 'io1' (provisioned IOPS SSD). The default is 'io1' if iops is specified"
-  default     = "standard"
+  type        = bool
 }
