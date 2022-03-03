@@ -19,12 +19,12 @@ output "instance_address" {
 }
 
 output "engine_version" {
-  description = "Enginer version"
+  description = "Engine version"
   value       = join("", aws_db_instance.default.*.engine_version)
 }
 
 output "instance_port" {
-  description = "The port"
+  description = "RDS cluster port"
   value       = join("", aws_db_instance.default.*.port)
 }
 
@@ -39,5 +39,6 @@ output "instance_endpoint" {
 }
 
 output "instance_name" {
-  value = join("", aws_db_instance.default.*.name)
+  description = "Instance name"
+  value       = join("", aws_db_instance.default.*.name)
 }
