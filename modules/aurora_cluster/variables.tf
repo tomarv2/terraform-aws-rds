@@ -115,7 +115,7 @@ variable "final_snapshot_identifier" {
 }
 
 variable "deploy_rds_cluster" {
-  description = "feature flag, true or false"
+  description = "Feature flag, true or false"
   default     = true
   type        = bool
 }

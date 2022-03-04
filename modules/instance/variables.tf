@@ -138,7 +138,7 @@ variable "db_subnet_group_name" {
 }
 
 variable "deploy_rds" {
-  description = "feature flag, true or false"
+  description = "Feature flag, true or false"
   default     = true
   type        = bool
 }
