@@ -97,6 +97,7 @@ tf -c=aws destroy -var='teamid=foo' -var='prjid=bar'
 ```
 
 **Note:** Read more on [tfremote](https://github.com/tomarv2/tfremote)
+
 ##### RDS instance with New Security Group
 ```
 module "common" {
