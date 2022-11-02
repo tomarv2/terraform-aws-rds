@@ -22,16 +22,12 @@
 > :arrow_right:  Terraform module for [Azure DB for MySQL](https://registry.terraform.io/modules/tomarv2/mysql/azure/latest)
 
 
-`terraform-aws-rds` makes it easy to create AWS RDS Instance and Cluster. This module consists of the following submodules:
-
-:point_right: [aurora_cluster](modules/aurora_cluster)
-
-:point_right: [instance](modules/instance)
+`terraform-aws-rds` makes it easy to create AWS RDS Instance and Cluster. 
 
 ### Versions
 
 - Module tested for Terraform 1.0.1.
-- AWS provider version [3.74](https://registry.terraform.io/providers/hashicorp/aws/latest)
+- AWS provider version [4.35](https://registry.terraform.io/providers/hashicorp/aws/latest)
 - `main` branch: Provider versions not pinned to keep up with Terraform releases
 - `tags` releases: Tags are pinned with versions (use <a href="https://github.com/tomarv2/terraform-aws-rds/tags" alt="GitHub tag">
         <img src="https://img.shields.io/github/v/tag/tomarv2/terraform-aws-rds" /></a> in your releases)
@@ -97,75 +93,5 @@ tf -c=aws destroy -var='teamid=foo' -var='prjid=bar'
 ```
 
 **Note:** Read more on [tfremote](https://github.com/tomarv2/tfremote)
-
-##### RDS instance with New Security Group
-```
-module "common" {
-  source = "git::git@github.com:tomarv2/terraform-global.git"
-}
-
-module "rds_instance" {
-  source = "../../modules/instance"
-
-  deploy_rds = true
-
-  dbname                 = "test"
-  engine                 = "postgres"
-  engine_version         = "11.9"
-  username               = "test"
-  password               = "test123!"
-  security_groups        = [module.security_group.security_group_id]
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-
-module "security_group" {
-  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git"
-
-  security_group_ingress = {
-    default = {
-      description = "postgres"
-      from_port   = 5432
-      protocol    = "tcp"
-      to_port     = 5432
-      self        = false
-      cidr_blocks = module.common.cidr_for_sec_grp_access
-      type        = "ingress"
-    }
-  }
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-```
-
-##### RDS cluster with Security Group
-```
-module "rds" {
-  source = "../../aurora_cluster"
-
-  dbname                 = "test"
-  rds_master_username    = "test"
-  rds_master_password    = "test123!"
-  security_groups        = [module.security_group.security_group_id]
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-
-module "security_group" {
-  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git"
-
-  service_ports = [5432]
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-```
 
 Please refer to examples directory [link](examples) for references.

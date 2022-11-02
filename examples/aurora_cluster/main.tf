@@ -2,49 +2,67 @@ terraform {
   required_version = ">= 1.0.1"
   required_providers {
     aws = {
-      version = "~> 3.74"
+      version = "~> 4.35"
     }
   }
 }
 
 provider "aws" {
-  region = var.region
+  region = "us-west-2"
 }
 
 module "common" {
   source = "git::git@github.com:tomarv2/terraform-global.git//common?ref=v0.0.1"
 }
 
-module "rds" {
-  source = "../../modules/aurora_cluster"
+module "aurora_cluster" {
+  source = "../../"
 
-  dbname              = "test"
-  rds_master_username = "test"
-  rds_master_password = "test123!"
-  security_groups     = [module.security_group.security_group_id]
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
-}
-
-
-module "security_group" {
-  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.6"
-
-  security_group_ingress = {
-    default = {
-      description = "postgres"
-      from_port   = 5432
-      protocol    = "tcp"
-      to_port     = 5432
-      self        = false
-      cidr_blocks = module.common.cidr_for_sec_grp_access
-      type        = "ingress"
+  aurora_cluster_config = {
+    demo = {
+      master_username        = "test"
+      master_password        = "test123!"
+      vpc_security_group_ids = module.security_group.id
+      instance_config = {
+        demowriter = {
+          engine = "aurora-postgresql"
+        }
+        demoreader = {
+          engine = "aurora-postgresql"
+        }
+      }
     }
   }
-  #-------------------------------------------
-  # Do not change the teamid, prjid once set.
-  teamid = var.teamid
-  prjid  = var.prjid
 }
+
+module "security_group" {
+  source = "git::git@github.com:tomarv2/terraform-aws-security-group.git?ref=v0.0.12"
+
+  config = {
+    demo_rds = {
+      all_ingress_rules = [
+        {
+          description = "https"
+          type        = "ingress"
+          from_port   = 5432
+          protocol    = "tcp"
+          to_port     = 5432
+          self        = true
+          cidr_blocks = []
+        }
+      ]
+      all_egress_rules = [
+        {
+          description = "outbound traffic"
+          from_port   = 0
+          protocol    = "-1"
+          type        = "egress"
+          to_port     = 0
+          self        = false
+          cidr_blocks = ["0.0.0.0/0"]
+        }
+      ]
+    }
+  }
+}
+
