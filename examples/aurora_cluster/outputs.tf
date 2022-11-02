@@ -1,45 +1,29 @@
-output "rds_cluster_arn" {
-  description = "The ID of the cluster"
-  value       = module.rds.rds_cluster_arn
+# Cluster
+output "cluster_arn" {
+  description = "Cluster arn"
+  value       = module.aurora_cluster.cluster_arn
 }
 
-output "rds_cluster_id" {
-  description = "The ID of the cluster"
-  value       = module.rds.rds_cluster_id
+output "cluster_id" {
+  description = "Cluster id"
+  value       = module.aurora_cluster.cluster_id
 }
 
-output "rds_cluster_resource_id" {
-  description = "The Resource ID of the cluster"
-  value       = module.rds.rds_cluster_resource_id
+output "cluster_resource_id" {
+  description = "Cluster resource id"
+  value       = module.aurora_cluster.cluster_resource_id
 }
 
-output "rds_cluster_endpoint" {
-  description = "The cluster endpoint"
-  value       = module.rds.rds_cluster_endpoint
+output "cluster_identifier" {
+  description = "Cluster identifier"
+  value       = module.aurora_cluster.cluster_identifier
 }
 
-output "rds_cluster_reader_endpoint" {
-  description = "The cluster reader endpoint"
-  value       = module.rds.rds_cluster_reader_endpoint
+output "cluster_endpoint" {
+  description = "Cluster endpoint"
+  value       = module.aurora_cluster.cluster_endpoint
 }
 
-output "rds_cluster_master_password" {
-  description = "The master password"
-  value       = module.rds.rds_cluster_master_password
-  sensitive   = true
-}
-
-output "rds_cluster_port" {
-  description = "RDS cluster port"
-  value       = module.rds.rds_cluster_port
-}
-
-output "rds_cluster_master_username" {
-  description = "The master username"
-  value       = module.rds.rds_cluster_master_username
-}
-
-output "rds_security_group" {
-  description = "Security Group of the RDS cluster"
-  value       = module.security_group.security_group_id
+output "cluster_instance_endpoint" {
+  value = module.aurora_cluster.cluster_instance_endpoint
 }
