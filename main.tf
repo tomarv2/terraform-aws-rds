@@ -1,5 +1,5 @@
 module "global" {
-  source = "git::git@github.com:tomarv2/terraform-global.git//aws?ref=v0.0.1"
+  source = "github.com/tomarv2/terraform-global.git//aws?ref=v0.0.1"
 }
 
 resource "aws_db_instance" "this" {
@@ -90,4 +90,3 @@ resource "aws_db_subnet_group" "this" {
   subnet_ids = module.global.list_of_subnets[local.account_id][local.region]
   tags       = merge(local.shared_tags, var.extra_tags)
 }
-
